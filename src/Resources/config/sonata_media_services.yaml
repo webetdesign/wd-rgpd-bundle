@@ -1,0 +1,4 @@
+services:
+  WebEtDesign\RgpdBundle\Exporter\ExporterSonataMedia:
+    autowire: true
+    autoconfigure: true

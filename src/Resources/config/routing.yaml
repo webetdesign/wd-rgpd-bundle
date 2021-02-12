@@ -1,0 +1,3 @@
+wd_rgpd.controller:
+  resource: '../../Controller/'
+  type: annotation
