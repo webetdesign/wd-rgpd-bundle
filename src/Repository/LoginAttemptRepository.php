@@ -2,7 +2,7 @@
 
 namespace WebEtDesign\RgpdBundle\Repository;
 
-use App\Entity\LoginAttempt;
+use WebEtDesign\RgpdBundle\Entity\LoginAttempt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
