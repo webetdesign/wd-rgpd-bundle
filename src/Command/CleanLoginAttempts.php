@@ -29,7 +29,7 @@ class CleanLoginAttempts extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $delay = $this->params->get('security.admin_delay');
+        $delay = $this->params->get('wd_rgpd.security.admin_delay');
 
         $this->loginAttemptRepository->deleteOldLoginAttempts($delay);
 

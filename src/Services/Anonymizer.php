@@ -4,6 +4,7 @@
 namespace WebEtDesign\RgpdBundle\Services;
 
 
+use DateTime;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,8 +12,10 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebEtDesign\RgpdBundle\Annotations\Anonymizable;
 use WebEtDesign\RgpdBundle\Annotations\Anonymizer as AnonymizerAnnotation;
+use WebEtDesign\RgpdBundle\Event\CustomAnonymizeEvent;
 use WebEtDesign\RgpdBundle\Utils\LoopGuard;
 
 class Anonymizer implements AnonymizerInterface
@@ -29,13 +32,21 @@ class Anonymizer implements AnonymizerInterface
     private LoopGuard $loopGuard;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private EventDispatcherInterface $eventDispatcher;
+
+    /**
      * @inheritDoc
      */
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->reader    = new AnnotationReader();
-        $this->em        = $em;
-        $this->loopGuard = new LoopGuard();
+    public function __construct(
+        EntityManagerInterface $em,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->reader          = new AnnotationReader();
+        $this->em              = $em;
+        $this->loopGuard       = new LoopGuard();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -54,18 +65,22 @@ class Anonymizer implements AnonymizerInterface
             $reflectionClass = $metadata->getReflectionClass();
 
             foreach ($reflectionClass->getProperties() as $property) {
+                /** @var AnonymizerAnnotation $annotation */
                 if (($annotation = $this->reader->getPropertyAnnotation($property,
                     AnonymizerAnnotation::class))) {
 
+                    if ($annotation->getType() === AnonymizerAnnotation::TYPE_CUSTOM) {
+                        $this->doCustomAnonymize($object, $property, $metadata);
+                    } else {
+                        if ($metadata->hasField($property->getName())) {
+                            $this->doAnonimize($object, $property, $annotation);
+                        }
 
-                    if ($metadata->hasField($property->getName())) {
-                        $this->doAnonimize($object, $property, $annotation);
+                        if ($metadata->hasAssociation($property->getName())) {
+                            $this->doAssociationAnonimize($object, $property, $annotation,
+                                $metadata);
+                        }
                     }
-
-                    if ($metadata->hasAssociation($property->getName())) {
-                        $this->doAssociationAnonimize($object, $property, $annotation, $metadata);
-                    }
-
                 }
             }
 
@@ -87,6 +102,12 @@ class Anonymizer implements AnonymizerInterface
             case AnonymizerAnnotation::TYPE_BOOL_FALSE:
                 $value = false;
                 break;
+            case AnonymizerAnnotation::TYPE_NULL:
+                $value = null;
+                break;
+            case AnonymizerAnnotation::TYPE_DATE:
+                $value = new DateTime('now');
+                break;
             case AnonymizerAnnotation::TYPE_EMAIL:
                 $value = 'anonymous-' . uniqid() . '@null.com';
                 break;
@@ -106,7 +127,7 @@ class Anonymizer implements AnonymizerInterface
         }
     }
 
-    public function doAssociationAnonimize(
+    private function doAssociationAnonimize(
         $object,
         ReflectionProperty $property,
         AnonymizerAnnotation $annotation,
@@ -149,6 +170,21 @@ class Anonymizer implements AnonymizerInterface
                     }
             }
         }
+    }
+
+    private function doCustomAnonymize(
+        $object,
+        ReflectionProperty $property,
+        ClassMetadata $metadata
+    ) {
+
+        $getter = 'get' . ucfirst($property->getName());
+        $setter = 'set' . ucfirst($property->getName());
+
+        $event = new CustomAnonymizeEvent($object, $this->em, $metadata, $property, $getter,
+            $setter);
+
+        $this->eventDispatcher->dispatch($event, CustomAnonymizeEvent::NAME);
     }
 
     private function isAnonymizable(string $className): bool
