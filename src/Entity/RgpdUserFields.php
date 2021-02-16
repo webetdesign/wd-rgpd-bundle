@@ -41,6 +41,13 @@ trait RgpdUserFields
      */
     protected ?DateTime $notifyInactivityAt;
 
+    /**
+     * @var DateTimeInterface|null $rgpdAcceptedAt
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected ?DateTimeInterface $rgpdAcceptedAt = null;
+
 
     public function getLastUpdatePassword(): DateTimeInterface
     {
@@ -87,6 +94,18 @@ trait RgpdUserFields
     public function setNotifyInactivityAt(?DateTime $notifyInactivityAt): self
     {
         $this->notifyInactivityAt = $notifyInactivityAt;
+        return $this;
+    }
+
+    public function getRgpdAcceptedAt(): ?\DateTimeInterface
+    {
+        return $this->rgpdAcceptedAt;
+    }
+
+    public function setRgpdAcceptedAt(?\DateTimeInterface $rgpdAcceptedAt): self
+    {
+        $this->rgpdAcceptedAt = $rgpdAcceptedAt;
+
         return $this;
     }
 
