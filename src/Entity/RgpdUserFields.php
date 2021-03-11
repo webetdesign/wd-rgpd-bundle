@@ -48,6 +48,13 @@ trait RgpdUserFields
      */
     protected ?DateTimeInterface $rgpdAcceptedAt = null;
 
+    /**
+     * @var DateTimeInterface|null $anonymizedAt
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected ?DateTimeInterface $anonymizedAt = null;
+
 
     public function getLastUpdatePassword(): DateTimeInterface
     {
@@ -109,4 +116,24 @@ trait RgpdUserFields
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getAnonymizedAt(): ?DateTimeInterface
+    {
+        return $this->anonymizedAt;
+    }
+
+    /**
+     * @param DateTimeInterface|null $anonymizedAt
+     */
+    public function setAnonymizedAt(?DateTimeInterface $anonymizedAt): void
+    {
+        $this->anonymizedAt = $anonymizedAt;
+    }
+
+
+    public function isAnonyme(){
+        return $this->getAnonymizedAt() !== null;
+    }
 }

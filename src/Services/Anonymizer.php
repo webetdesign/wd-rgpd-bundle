@@ -84,6 +84,8 @@ class Anonymizer implements AnonymizerInterface
                 }
             }
 
+            $object->setAnonymizedAt(new DateTime('now'));
+
             $this->em->persist($object);
         }
     }
