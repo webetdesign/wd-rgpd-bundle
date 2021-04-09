@@ -19,13 +19,13 @@ trait RgpdUserFields
     protected $plainPassword;
 
     /**
-     * @var DateTimeInterface $lastUpdatePassword
+     * @var ?DateTimeInterface $lastUpdatePassword
      *
      * @ORM\Column(type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="change", field={"password"})
      */
-    protected DateTimeInterface $lastUpdatePassword;
+    protected ?DateTimeInterface $lastUpdatePassword = null;
 
     /**
      * @var ?DateTime
@@ -55,8 +55,9 @@ trait RgpdUserFields
      */
     protected ?DateTimeInterface $anonymizedAt = null;
 
+    public $rgpdConfirm;
 
-    public function getLastUpdatePassword(): DateTimeInterface
+    public function getLastUpdatePassword(): ?DateTimeInterface
     {
         return $this->lastUpdatePassword;
     }
