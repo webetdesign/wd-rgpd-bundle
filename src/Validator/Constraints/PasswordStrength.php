@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping\Annotation;
  */
 class PasswordStrength extends Constraint
 {
-    public $tooShortMessage = 'Votre mot de passe doit faire au minimum {{ length }} caractères.';
-    public $message = 'Mot de passe trop sensible : {{ strength_tips }}';
+    public $tooShortMessage = 'password_strength.length.error';
+    public $message = 'password_strength.sensibility.error';
     public $minLength = 6;
     public $minStrength;
     public $unicodeEquality = false;
