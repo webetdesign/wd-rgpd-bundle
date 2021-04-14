@@ -22,33 +22,43 @@ class MailFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $m1 = new Mail();
-        $m1
-            ->setName('Routine rappel mise à jour mot de passe obsolète')
-            ->setEvent('ROUTINE_CHANGE_OLD_PASSWORD_REMINDER')
-            ->setTo('__user.email__')
-            ->setFrom('noreply@webetdesign.com')
-            ->setTitle('Mise à jour mot de passe obsolète')
-            ->setOnline(false)
-            ->setContentHtml(file_get_contents(realpath(__DIR__ . '/../Resources/views/ROUTINE_CHANGE_OLD_PASSWORD_REMINDER.html.twig')))
-            ->setContentTxt(file_get_contents(realpath(__DIR__ . '/../Resources/views/ROUTINE_CHANGE_OLD_PASSWORD_REMINDER.txt.twig')))
-        ;
-        $manager->persist($m1);
-
-        $m2 = new Mail();
-        $m2
-            ->setName("Routine notification d'inactivité")
-            ->setEvent('ROUTINE_INACTIVITY_NOTIFICATION')
-            ->setTo('__user.email__')
-            ->setFrom('noreply@webetdesign.com')
-            ->setTitle("Notification d'inactivité")
-            ->setOnline(false)
-            ->setContentHtml(file_get_contents(realpath(__DIR__ . '/../Resources/views/ROUTINE_INACTIVITY_NOTIFICATION.html.twig')))
-            ->setContentTxt(file_get_contents(realpath(__DIR__ . '/../Resources/views/ROUTINE_INACTIVITY_NOTIFICATION.txt.twig')))
-        ;
+        $mails = [
+            0 => [
+                'name' => "Routine rappel mise à jour mot de passe obsolète",
+                'event' => 'ROUTINE_CHANGE_OLD_PASSWORD_REMINDER',
+                'title' => "Mise à jour mot de passe obsolète"
+            ],
+            1 => [
+                'name' => "Routine notification d'inactivité",
+                'event' => 'ROUTINE_INACTIVITY_NOTIFICATION',
+                'title' => "Notification d'inactivité"
+            ],
+            2 => [
+                'name' => "Export données utilisateur",
+                'event' => 'USER_EXPORT_DATA',
+                'title' => "Export de vos données"
+            ]
+        ];
 
         $manager->persist($m2);
         $manager->flush();
+
+        foreach ($mail as $mails) {
+            $m = new Mail();
+            $m
+                ->setName($mail['name'])
+                ->setEvent($mail['event'])
+                ->setTo('__user.email__')
+                ->setFrom('noreply@webetdesign.com')
+                ->setTitle($mail['title'])
+                ->setOnline(false)
+                ->setContentHtml(file_get_contents(realpath(__DIR__ . '/../Resources/views/' .($mail['event']. '.html.twig')))
+                ->setContentTxt(file_get_contents(realpath(__DIR__ . '/../Resources/views/' . ($mail['event'] . '.txt.twig')));
+            ;
+
+            $manager->persist($m);
+            $manager->flush();
+        }
 
     }
 }

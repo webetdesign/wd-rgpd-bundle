@@ -115,7 +115,7 @@ class Exporter implements ExporterInterface
 
                                 $output[$name] = [];
                                 foreach ($object->$getter() as $item) {
-                                    $output[$name][] = $this->doExport($item);
+                                    $output[$name][] = $item ? $this->doExport($item) : null;
                                 }
                                 break;
                             case ClassMetadataInfo::MANY_TO_ONE:
@@ -124,13 +124,12 @@ class Exporter implements ExporterInterface
                                 if ($annotation->getType() === Exportable::TYPE_SONATA_MEDIA) {
                                     $exporter = $this->getExporter(Exportable::TYPE_SONATA_MEDIA);
                                     if ($exporter) {
-                                        $output[$name] = $exporter->doExport($this->getTmpDir(),
-                                            $object->$getter());
+                                        $output[$name] = $object->$getter() ? $this->doExport($object->$getter()) : null;
                                     } else {
                                         $output[$name] = null;
                                     }
                                 } else {
-                                    $output[$name] = $this->doExport($object->$getter());
+                                    $output[$name] = $object->$getter() ? $this->doExport($object->$getter()) : null;
                                 }
 
                                 break;
