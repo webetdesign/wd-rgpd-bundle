@@ -40,20 +40,17 @@ class MailFixtures extends Fixture
             ]
         ];
 
-        $manager->persist($m2);
-        $manager->flush();
-
-        foreach ($mail as $mails) {
+        foreach ($mails as $mail) {
             $m = new Mail();
             $m
                 ->setName($mail['name'])
                 ->setEvent($mail['event'])
                 ->setTo('__user.email__')
                 ->setFrom('noreply@webetdesign.com')
-                ->setTitle($mail['title'])
                 ->setOnline(false)
-                ->setContentHtml(file_get_contents(realpath(__DIR__ . '/../Resources/views/' .($mail['event']. '.html.twig')))
-                ->setContentTxt(file_get_contents(realpath(__DIR__ . '/../Resources/views/' . ($mail['event'] . '.txt.twig')));
+                ->setTitle($mail['title'])
+                ->setContentHtml(file_get_contents(realpath(__DIR__ . '/../Resources/views/' .$mail['event']. '.html.twig')))
+                ->setContentTxt(file_get_contents(realpath(__DIR__ . '/../Resources/views/' . $mail['event'] . '.txt.twig')));
             ;
 
             $manager->persist($m);
