@@ -12,17 +12,17 @@ class UserExportData extends Event
 
     private User $user;
 
-    private string $json;
+    private ?string $data = '';
 
     /**
      * UserExportData constructor.
      * @param User $user
-     * @param string $json
+     * @param string|null $data
      */
-    public function __construct(User $user, string $json)
+    public function __construct(User $user, ?string $data)
     {
         $this->user = $user;
-        $this->json = $json;
+        $this->data = $data;
     }
 
     /**
@@ -42,19 +42,38 @@ class UserExportData extends Event
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getJson(): string
+    public function getData(bool $toArray = false)
     {
-        return $this->json;
+        $data = json_decode($this->data, true);
+
+        if(isset($data['_archive'])){
+            unset($data['_archive']);
+        }
+
+        return $toArray ? $data : json_encode($data);
+    }
+
+    public function getDataArray(){
+        return $this->getData(true);
+    }
+
+    public function getArchiveLink(){
+        $data = json_decode($this->data, true);
+
+        if(isset($data['_archive'])){
+            return $data['_archive'];
+        }
+        return null;
     }
 
     /**
-     * @param string $json
+     * @param string|null $data
      */
-    public function setJson(string $json): void
+    public function setData(?string $data): void
     {
-        $this->json = $json;
+        $this->data = $data;
     }
 
     public function getLocale(){

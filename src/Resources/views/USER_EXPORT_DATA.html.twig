@@ -2,6 +2,10 @@ Bonjour,
 
 Voici vos données exportées : <br><br>
 
-{{ json|raw }} <br><br>
+{{ data|raw }} <br><br>
+
+{% if archiveLink %}
+    <a href="{{ archiveLink }}">Votre archive</a>  <br><br>
+{% endif %}
 
 Ce mail vous a été envoyé automatiquement merci de ne pas y répondre.
