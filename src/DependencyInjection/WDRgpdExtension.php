@@ -7,6 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use WebEtDesign\RgpdBundle\Annotations\Anonymizable;
+use WebEtDesign\RgpdBundle\Annotations\Anonymizer;
 use WebEtDesign\RgpdBundle\Annotations\Exportable;
 
 /**
@@ -58,6 +60,7 @@ class WDRgpdExtension extends Extension
 
         $bundles         = $container->getParameter('kernel.bundles');
         $exporterService = $container->getDefinition('WebEtDesign\RgpdBundle\Services\Exporter');
+        $anonymizerService = $container->getDefinition('WebEtDesign\RgpdBundle\Services\Anonymizer');
         if (isset($bundles['SonataMediaBundle'])) {
             $loader->load('sonata_media_services.yaml');
             $exporterMediaService = $container->getDefinition('WebEtDesign\RgpdBundle\Exporter\ExporterSonataMedia');
@@ -70,6 +73,9 @@ class WDRgpdExtension extends Extension
             $exporterVichService = $container->getDefinition('WebEtDesign\RgpdBundle\Exporter\ExporterVich');
             $exporterService->addMethodCall('addExporter',
                 [$exporterVichService, Exportable::TYPE_VICH_UPLOADER]);
+
+            $anonymizerVichService = $container->getDefinition('WebEtDesign\RgpdBundle\Anonymizer\AnonymizerVich');
+            $anonymizerService->addMethodCall('addAnonymizer', [$anonymizerVichService, Anonymizer::TYPE_VICH]);
         }
     }
 }

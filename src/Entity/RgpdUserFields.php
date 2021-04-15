@@ -12,6 +12,7 @@ use WebEtDesign\RgpdBundle\Validator\Constraints as WDConstraints;
 
 trait RgpdUserFields
 {
+    use RgpdAnonymizeFields;
 
     /**
      * @WDConstraints\PasswordStrength(minLength=6, minStrength=4, groups={"Registration", "Profile", "ResetPassword", "ChangePassword"})

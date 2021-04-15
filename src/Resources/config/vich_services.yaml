@@ -2,3 +2,7 @@ services:
   WebEtDesign\RgpdBundle\Exporter\ExporterVich:
     autowire: true
     autoconfigure: true
+
+  WebEtDesign\RgpdBundle\Anonymizer\AnonymizerVich:
+    autowire: true
+    autoconfigure: true

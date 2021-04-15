@@ -1,6 +1,5 @@
 <?php
 
-
 namespace WebEtDesign\RgpdBundle\Annotations;
 
 use Exception;
@@ -22,10 +21,10 @@ class Anonymizer
     const TYPE_NULL       = 'TYPE_NULL';
     const TYPE_DATE       = 'TYPE_DATE';
     const TYPE_CUSTOM     = 'TYPE_CUSTOM';
+    const TYPE_VICH       = 'TYPE_VICH';
 
     const ACTION_SET_NULL = 'SET_NULL';
     const ACTION_CASCADE  = 'CASCADE';
-
 
     private string  $type;
     private string  $action;
@@ -59,6 +58,7 @@ class Anonymizer
     public function setType(string $type): Anonymizer
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -77,6 +77,7 @@ class Anonymizer
     public function setAction(string $action): Anonymizer
     {
         $this->action = $action;
+
         return $this;
     }
 
@@ -95,6 +96,7 @@ class Anonymizer
     public function setService($service)
     {
         $this->service = $service;
+
         return $this;
     }
 
@@ -113,6 +115,7 @@ class Anonymizer
     public function setMethod($method)
     {
         $this->method = $method;
+
         return $this;
     }
 }

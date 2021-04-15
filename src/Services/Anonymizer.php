@@ -15,6 +15,7 @@ use ReflectionProperty;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebEtDesign\RgpdBundle\Annotations\Anonymizable;
 use WebEtDesign\RgpdBundle\Annotations\Anonymizer as AnonymizerAnnotation;
+use WebEtDesign\RgpdBundle\Anonymizer\AnonymizerFileInterface;
 use WebEtDesign\RgpdBundle\Event\CustomAnonymizeEvent;
 use WebEtDesign\RgpdBundle\Utils\LoopGuard;
 
@@ -35,6 +36,11 @@ class Anonymizer implements AnonymizerInterface
      * @var EventDispatcherInterface
      */
     private EventDispatcherInterface $eventDispatcher;
+
+    /**
+     * @var array<AnonymizerFileInterface>
+     */
+    private array $anonymizer = [];
 
     /**
      * @inheritDoc
@@ -68,11 +74,10 @@ class Anonymizer implements AnonymizerInterface
                 /** @var AnonymizerAnnotation $annotation */
                 if (($annotation = $this->reader->getPropertyAnnotation($property,
                     AnonymizerAnnotation::class))) {
-
                     if ($annotation->getType() === AnonymizerAnnotation::TYPE_CUSTOM) {
                         $this->doCustomAnonymize($object, $property, $metadata);
                     } else {
-                        if ($metadata->hasField($property->getName())) {
+                        if ($metadata->hasField($property->getName()) || $annotation->getType() === AnonymizerAnnotation::TYPE_VICH) {
                             $this->doAnonimize($object, $property, $annotation);
                         }
 
@@ -115,6 +120,13 @@ class Anonymizer implements AnonymizerInterface
                 break;
             case AnonymizerAnnotation::TYPE_UNIQ:
                 $value = 'anonymous-' . uniqid();
+                break;
+            case AnonymizerAnnotation::TYPE_VICH:
+                $anonymizer = $this->getAnonymizer(AnonymizerAnnotation::TYPE_VICH);
+                if ($anonymizer) {
+                    $anonymizer->doAnonymize($object, $property);
+                }
+                $value = null;
                 break;
             case AnonymizerAnnotation::TYPE_STRING:
             default:
@@ -194,5 +206,15 @@ class Anonymizer implements AnonymizerInterface
         $reflectionClass = new ReflectionClass($className);
 
         return $this->reader->getClassAnnotation($reflectionClass, Anonymizable::class) !== null;
+    }
+
+    public function addAnonymizer(AnonymizerFileInterface $file, $key): void
+    {
+        $this->anonymizer[$key] = $file;
+    }
+
+    public function getAnonymizer($key): ?AnonymizerFileInterface
+    {
+        return $this->anonymizer[$key] ?? null;
     }
 }
