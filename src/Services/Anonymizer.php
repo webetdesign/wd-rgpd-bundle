@@ -124,7 +124,7 @@ class Anonymizer implements AnonymizerInterface
             case AnonymizerAnnotation::TYPE_VICH:
                 $anonymizer = $this->getAnonymizer(AnonymizerAnnotation::TYPE_VICH);
                 if ($anonymizer) {
-                    $anonymizer->doAnonymize($object, $property);
+                    $object = $anonymizer->doAnonymize($object, $property);
                 }
                 $value = null;
                 break;
