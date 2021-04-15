@@ -52,6 +52,14 @@ class WDRgpdExtension extends Extension
             'wd_rgpd.inactivity.email_cto_route',
             $config['inactivity']['email_cto_route']
         );
+        $container->setParameter(
+            'wd_rgpd.inactivity.callback',
+            $config['inactivity']['callback']
+        );
+        $container->setParameter(
+            'wd_rgpd.inactivity.userClass',
+            $config['inactivity']['userClass']
+        );
 
 
         $loader = new Loader\YamlFileLoader($container,

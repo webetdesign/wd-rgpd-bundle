@@ -3,24 +3,22 @@
 
 namespace WebEtDesign\RgpdBundle\Event;
 
-
-use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class RoutineInactivityNotification extends Event
 {
     public const NAME = 'ROUTINE_INACTIVITY_NOTIFICATION';
 
-    private User $user;
+    private $user;
 
     private ?string $ctoLink = null;
 
-    public function __construct(User $user)
+    public function __construct($user)
     {
         $this->user = $user;
     }
 
-    public function getUser(): User
+    public function getUser()
     {
         return $this->user;
     }

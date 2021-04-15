@@ -3,26 +3,24 @@
 
 namespace WebEtDesign\RgpdBundle\Event;
 
-
-use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class RoutineChangeOldPasswordReminder extends Event
 {
     public const NAME = 'ROUTINE_CHANGE_OLD_PASSWORD_REMINDER';
 
-    private User $user;
+    private $user;
 
     private ?string $resetLink;
 
     private string $useTime;
 
-    public function __construct(User $user)
+    public function __construct($user)
     {
         $this->user = $user;
     }
 
-    public function getUser(): User
+    public function getUser()
     {
         return $this->user;
     }
