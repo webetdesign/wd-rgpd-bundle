@@ -2,41 +2,28 @@
 
 namespace WebEtDesign\RgpdBundle\Event;
 
-
-use App\Entity\User\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class UserExportData extends Event
 {
     public const NAME = 'USER_EXPORT_DATA';
 
-    private User $user;
+    private $user;
 
     private ?string $data = '';
-
-    /**
-     * UserExportData constructor.
-     * @param User $user
-     * @param string|null $data
-     */
-    public function __construct(User $user, ?string $data)
+    
+    public function __construct($user, ?string $data)
     {
         $this->user = $user;
         $this->data = $data;
     }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
+    
+    public function getUser()
     {
         return $this->user;
     }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user): void
+    
+    public function setUser($user): void
     {
         $this->user = $user;
     }

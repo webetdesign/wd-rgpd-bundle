@@ -2,7 +2,6 @@
 
 namespace WebEtDesign\RgpdBundle\Command;
 
-use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -11,6 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -25,7 +25,10 @@ class RgpdReminderOldPasswordCommand extends Command
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $em;
-    private                        $config;
+    /**
+     * @var ParameterBagInterface
+     */
+    private ParameterBagInterface $parameterBag;    
     /**
      * @var EventDispatcherInterface
      */
@@ -45,15 +48,15 @@ class RgpdReminderOldPasswordCommand extends Command
      * @inheritDoc
      */
     public function __construct(
-        string $name = null,
         EntityManagerInterface $em,
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router,
-        $config
+        ParameterBagInterface $parameterBag,
+        string $name = null
     ) {
         parent::__construct($name);
         $this->em              = $em;
-        $this->config          = $config;
+        $this->parameterBag    = $parameterBag;
         $this->eventDispatcher = $eventDispatcher;
         $this->router          = $router;
     }
@@ -64,12 +67,14 @@ class RgpdReminderOldPasswordCommand extends Command
         $io   = new SymfonyStyle($input, $output);
 
         $now          = new DateTime('now');
-        $validityDate = new DateTime('now -' . $this->config['password_validity_duration_before_notify']);
-        $notifyDate   = new DateTime('now -' . $this->config['duration_between_notify']);
+        $validityDate = new DateTime('now -' . $this->parameterBag->get('wd_rgpd.old_password_reminder.password_validity_duration_before_notify'));
+        $notifyDate   = new DateTime('now -' . $this->parameterBag->get('wd_rgpd.old_password_reminder.duration_between_notify'));
+
+        $userClass = $this->parameterBag->get('wd_rgpd.userClass');
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('u')
-            ->from(User::class, 'u')
+            ->from($userClass, 'u')
             ->andWhere('u.enabled = true')
             ->andWhere('u.lastUpdatePassword < :validityDate')
             ->andWhere($qb->expr()->orX(
@@ -81,7 +86,6 @@ class RgpdReminderOldPasswordCommand extends Command
 
         $users = $qb->getQuery()->getResult();
 
-        /** @var User $user */
         foreach ($users as $user) {
             $diff = date_diff($now, $user->getLastUpdatePassword());
 
@@ -97,7 +101,7 @@ class RgpdReminderOldPasswordCommand extends Command
             $event->setUseTime($useTime);
             try {
                 $reset_link = $this->router->generate(
-                    $this->config['reset_password_route'], [], UrlGeneratorInterface::ABSOLUTE_URL
+                    $this->parameterBag->get('wd_rgpd.old_password_reminder.reset_password_route'), [], UrlGeneratorInterface::ABSOLUTE_URL
                 );
                 $event->setResetLink($reset_link);
 

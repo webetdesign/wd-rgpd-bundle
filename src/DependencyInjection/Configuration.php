@@ -33,6 +33,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('userClass')->defaultValue('App\Entity\User')->end()
+            ->end()
+        ;
+
+        $rootNode
+            ->children()
                 ->arrayNode('old_password_reminder')->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('password_validity_duration_before_notify')
@@ -49,7 +55,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('inactivity')->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('userClass')->defaultValue('App\Entity\User')->end()
                         ->scalarNode('duration')->defaultValue('12 month')->end()
                         ->scalarNode('duration_before_anonymization')->defaultValue('1 month')->end()
                         ->scalarNode('email_cto_route')->defaultNull()->end()

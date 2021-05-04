@@ -2,7 +2,6 @@
 
 namespace WebEtDesign\RgpdBundle\Command;
 
-use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -47,9 +46,7 @@ class RgpdInactiveUserCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription(self::$defaultDescription)
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
+            ->setDescription(self::$defaultDescription);
     }
 
     public function __construct(
@@ -76,7 +73,7 @@ class RgpdInactiveUserCommand extends Command
         $inactivityDate    = new DateTime('now -' . $this->parameterBag->get('wd_rgpd.inactivity.duration'));
         $anonymizationDate = new DateTime('now -' . $this->parameterBag->get('wd_rgpd.inactivity.duration_before_anonymization'));
 
-        $userClass = $this->parameterBag->get('wd_rgpd.inactivity.userClass');
+        $userClass = $this->parameterBag->get('wd_rgpd.userClass');
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('u')

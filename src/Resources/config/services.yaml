@@ -10,11 +10,3 @@ services:
   WebEtDesign\RgpdBundle\Controller\:
     resource: '../../Controller'
     tags: [ 'controller.service_arguments' ]
-
-  WebEtDesign\RgpdBundle\Command\RgpdReminderOldPasswordCommand:
-    arguments:
-      - ~
-      - '@doctrine.orm.entity_manager'
-      - '@event_dispatcher'
-      - '@router'
-      - '%wd_rgpd.old_password_reminder%'

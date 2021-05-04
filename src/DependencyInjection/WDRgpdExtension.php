@@ -29,8 +29,20 @@ class WDRgpdExtension extends Extension
 
         $container->setParameter('wd_rgpd.export.zip_private_path',
             $config['export']['zip_private_path']);
-        $container->setParameter('wd_rgpd.old_password_reminder', $config['old_password_reminder']);
-
+        
+        $container->setParameter(
+            'wd_rgpd.old_password_reminder.password_validity_duration_before_notify',
+            $config['old_password_reminder']['password_validity_duration_before_notify']
+        );
+        $container->setParameter(
+            'wd_rgpd.old_password_reminder.duration_between_notify',
+            $config['old_password_reminder']['duration_between_notify']
+        );
+        $container->setParameter(
+            'wd_rgpd.old_password_reminder.reset_password_route',
+            $config['old_password_reminder']['reset_password_route']
+        );
+        
         $container->setParameter(
             'wd_rgpd.security.admin_delay',
             $config['security']['admin_delay']
@@ -56,9 +68,10 @@ class WDRgpdExtension extends Extension
             'wd_rgpd.inactivity.callback',
             $config['inactivity']['callback']
         );
+        
         $container->setParameter(
-            'wd_rgpd.inactivity.userClass',
-            $config['inactivity']['userClass']
+            'wd_rgpd.userClass',
+            $config['userClass']
         );
 
 
