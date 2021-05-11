@@ -33,7 +33,7 @@ class AnonymizerVich implements AnonymizerFileInterface
         $annotation = $this->reader->getPropertyAnnotation($property, UploadableField::class);
         $this->uploadHandler->remove($object, $property->getName());
         $setter = 'set' . ucfirst($annotation->getFileNameProperty());
-        $object->$setter('anonymous');
+        $object->$setter('anonymous_' . uniqid());
         return $object;
     }
 }
