@@ -53,13 +53,19 @@ class ExporterVich implements ExporterFileInterface
             return null;
         }
 
-        $publicDir = $this->parameterBag->get('kernel.project_dir') . '/public';
-        $getter    = 'get' . ucfirst($annotation->getFileNameProperty());
+       try{
+           $publicDir = $this->parameterBag->get('kernel.project_dir') . '/public';
+           $getter    = 'get' . ucfirst($annotation->getFileNameProperty());
 
-        $path    = $publicDir . $imgPath;
-        $newPath = $tmpDir . '/' . $object->$getter();
+           $path    = $publicDir . $imgPath;
+           $newPath = $tmpDir . '/' . $object->$getter();
 
-        copy($path, $newPath);
+           copy($path, $newPath);
+       }catch (\Exception $e){
+            return [
+                'file' => null
+            ];
+       }
 
         return [
             'file' => $object->$getter()
