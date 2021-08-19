@@ -19,12 +19,12 @@
     "ext-gettext": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "symfony/console": "^4.4",
+    "symfony/console": "^5.3",
     "doctrine/common": "^2.7",
     "doctrine/orm": "^2.6",
-    "doctrine/doctrine-bundle": "^1.10",
-    "symfony/dependency-injection": "^4.0",
-    "webetdesign/wd-mailer-bundle": "^1.0"
+    "doctrine/doctrine-bundle": "^2.4",
+    "symfony/dependency-injection": "^5.3",
+    "webetdesign/wd-mailer-bundle": "dev-sf5"
   },
   "require-dev": {
     "sonata-project/admin-bundle": "^3.81",
