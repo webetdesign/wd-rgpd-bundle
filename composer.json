@@ -15,15 +15,14 @@
     }
   ],
   "require": {
-    "php": "^7.4",
-    "ext-gettext": "*",
+    "php": "^7.4|^8.0",
     "ext-json": "*",
     "ext-zip": "*",
-    "symfony/console": "^5.3",
-    "doctrine/common": "^3.1",
-    "doctrine/orm": "^2.6",
-    "doctrine/doctrine-bundle": "^2.4",
-    "symfony/dependency-injection": "^5.3",
+    "symfony/console": "^5.4",
+    "doctrine/common": "^2.11 || ^3.0",
+    "doctrine/doctrine-bundle": "^1.12 || ^2",
+    "doctrine/orm": "^2.6.4 || ^3.0",
+    "symfony/dependency-injection": "^5.4",
     "webetdesign/wd-mailer-bundle": "dev-sf5"
   },
   "require-dev": {

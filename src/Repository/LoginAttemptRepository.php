@@ -2,9 +2,9 @@
 
 namespace WebEtDesign\RgpdBundle\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use WebEtDesign\RgpdBundle\Entity\LoginAttempt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method LoginAttempt|null find($id, $lockMode = null, $lockVersion = null)
