@@ -5,9 +5,7 @@ namespace WebEtDesign\RgpdBundle\Command;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -28,7 +26,7 @@ class RgpdReminderOldPasswordCommand extends Command
     /**
      * @var ParameterBagInterface
      */
-    private ParameterBagInterface $parameterBag;    
+    private ParameterBagInterface $parameterBag;
     /**
      * @var EventDispatcherInterface
      */
@@ -77,6 +75,7 @@ class RgpdReminderOldPasswordCommand extends Command
             ->from($userClass, 'u')
             ->andWhere('u.enabled = true')
             ->andWhere('u.lastUpdatePassword < :validityDate')
+            ->andWhere($qb->expr()->isNull('u.azureId'))
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->lt('u.notifyUpdatePasswordAt', ':notifyDate'),
                 $qb->expr()->isNull('u.notifyUpdatePasswordAt')
