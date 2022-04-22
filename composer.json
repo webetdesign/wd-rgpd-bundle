@@ -23,7 +23,7 @@
     "doctrine/doctrine-bundle": "^1.12 || ^2",
     "doctrine/orm": "^2.6.4 || ^3.0",
     "symfony/dependency-injection": "^5.4",
-    "webetdesign/wd-mailer-bundle": "dev-sf5"
+    "webetdesign/wd-mailer-bundle": "3.0.*"
   },
   "require-dev": {
     "sonata-project/admin-bundle": "^3.81",
