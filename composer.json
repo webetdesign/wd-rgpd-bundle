@@ -18,12 +18,12 @@
     "php": "^7.4|^8.0",
     "ext-json": "*",
     "ext-zip": "*",
-    "symfony/console": "^4.4",
+    "symfony/console": "^5.4",
     "doctrine/common": "^2.11 || ^3.0",
-    "doctrine/doctrine-bundle": "^1.12 || ^2.0",
+    "doctrine/doctrine-bundle": "^1.12 || ^2",
     "doctrine/orm": "^2.6.4 || ^3.0",
-    "symfony/dependency-injection": "^4.0",
-    "webetdesign/wd-mailer-bundle": "^1.0"
+    "symfony/dependency-injection": "^5.4",
+    "webetdesign/wd-mailer-bundle": "dev-sf5"
   },
   "require-dev": {
     "sonata-project/admin-bundle": "^3.81",
