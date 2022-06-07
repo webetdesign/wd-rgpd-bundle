@@ -30,7 +30,7 @@ class PasswordStrengthValidator extends ConstraintValidator
         if (null === $translator) {
             $translator = new Translator('fr');
             $translator->addLoader('xlf', new XliffFileLoader());
-            $translator->addResource('xlf', dirname(dirname(__DIR__)) . '/Resources/translations/password_strength.fr.xlf', 'fr', 'validators');
+//            $translator->addResource('xlf', dirname(dirname(__DIR__)) . '/Resources/translations/password_strength.fr.xlf', 'fr', 'validators');
         }
 
         $this->translator = $translator;
