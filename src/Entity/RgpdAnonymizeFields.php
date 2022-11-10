@@ -5,6 +5,7 @@ namespace WebEtDesign\RgpdBundle\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait RgpdAnonymizeFields
@@ -14,6 +15,7 @@ trait RgpdAnonymizeFields
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?DateTimeInterface $anonymizedAt = null;
 
     /**

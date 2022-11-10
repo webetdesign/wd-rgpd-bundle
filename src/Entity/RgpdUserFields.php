@@ -5,6 +5,7 @@ namespace WebEtDesign\RgpdBundle\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use WebEtDesign\RgpdBundle\Validator\Constraints as WDConstraints;
@@ -17,6 +18,7 @@ trait RgpdUserFields
     /**
      * @WDConstraints\PasswordStrength(minLength=6, minStrength=4, groups={"Registration", "Profile", "ResetPassword", "ChangePassword"})
      */
+
     protected $plainPassword;
 
     /**
@@ -26,6 +28,9 @@ trait RgpdUserFields
      * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="change", field={"password"})
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Gedmo\Timestampable(on: "create")]
+    #[Gedmo\Timestampable(on: "change", field: ["password"])]
     protected ?DateTimeInterface $lastUpdatePassword = null;
 
     /**
@@ -33,6 +38,7 @@ trait RgpdUserFields
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?DateTime $notifyUpdatePasswordAt;
 
     /**
@@ -40,6 +46,7 @@ trait RgpdUserFields
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?DateTime $notifyInactivityAt;
 
     /**
@@ -47,6 +54,7 @@ trait RgpdUserFields
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?DateTimeInterface $rgpdAcceptedAt = null;
 
     /**
@@ -54,6 +62,7 @@ trait RgpdUserFields
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?DateTimeInterface $anonymizedAt = null;
 
     public $rgpdConfirm;

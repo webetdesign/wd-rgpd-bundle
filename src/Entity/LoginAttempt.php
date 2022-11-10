@@ -2,12 +2,16 @@
 
 namespace WebEtDesign\RgpdBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebEtDesign\RgpdBundle\Repository\LoginAttemptRepository;
 
 /**
  * @ORM\Entity(repositoryClass="WebEtDesign\RgpdBundle\Repository\LoginAttemptRepository")
  * @ORM\Table(name="user__login_attempt")
  */
+#[ORM\Entity(repositoryClass: LoginAttemptRepository::class)]
+#[ORM\Table(name: "user__login_attempt")]
 class LoginAttempt
 {
     /**
@@ -15,26 +19,33 @@ class LoginAttempt
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     private $ipAddress;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private $date;
 
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
      */
+    #[ORM\Column(type: Types::STRING, length: 128, nullable: true)]
     private $username;
 
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
      */
+    #[ORM\Column(type: Types::STRING, length: 128, nullable: true)]
     private $firewall;
 
     public function __construct(?string $ipAddress, ?string $username, ?string $firewall)
