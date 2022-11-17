@@ -29,8 +29,7 @@ trait RgpdUserFields
      * @Gedmo\Timestampable(on="change", field={"password"})
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Gedmo\Timestampable(on: "create")]
-    #[Gedmo\Timestampable(on: "change", field: ["password"])]
+    #[Gedmo\Timestampable(field: ["password"])]
     protected ?DateTimeInterface $lastUpdatePassword = null;
 
     /**
