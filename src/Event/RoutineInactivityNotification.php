@@ -5,9 +5,10 @@ namespace WebEtDesign\RgpdBundle\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 use WebEtDesign\MailerBundle\Attribute\MailEvent;
+use WebEtDesign\MailerBundle\Event\AbstractMailEvent;
 
 #[MailEvent(name: self::NAME, label: 'Routine notification d\'inactivité')]
-class RoutineInactivityNotification extends Event
+class RoutineInactivityNotification extends AbstractMailEvent
 {
     public const NAME = 'ROUTINE_INACTIVITY_NOTIFICATION';
 
@@ -25,7 +26,7 @@ class RoutineInactivityNotification extends Event
         return $this->user;
     }
 
-    public function getEmail() : ?string {
+    public function getEmail() : string {
         return $this->user->getEmail();
     }
 
